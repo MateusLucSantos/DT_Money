@@ -1,15 +1,15 @@
 /* eslint-env node */
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
-
-module.exports = defineConfig([
-  expoConfig,
-  {
-    ignores: ['dist/*'],
-  },
-  {
-    rules: {
-      'react/display-name': 'off',
+module.exports = {
+  root: true,
+  extends: [
+    '@react-native-community',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  settings: {
+    'import/resolver': {
+      typescript: {},
     },
   },
-]);
+};
