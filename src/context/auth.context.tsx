@@ -24,7 +24,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
   async function handleAuthenticate(userData: FormLoginParams) {
     const { token, user } = await authService.authenticate(userData);
-    console.log(token, user);
 
     await AsyncStorage.setItem('dt-money-user', JSON.stringify({ user, token }));
 
