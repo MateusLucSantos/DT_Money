@@ -5,8 +5,11 @@ import { PublicStacParamsList } from '@/routes/PublicRoutes';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { schema } from './schema';
+import { useAuthContext } from '@/context/auth.context';
+import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
+import { colors } from '@/shared/colors';
 
 export interface FormLoginParams {
   email: string;
@@ -23,9 +26,18 @@ export function LoginForm() {
     resolver: yupResolver(schema),
   });
 
+  const { handleAuthenticate } = useAuthContext();
+  const { handlerError } = useErrorHandler();
+
   const navigation = useNavigation<NavigationProp<PublicStacParamsList>>();
 
-  async function onSubmit() {}
+  async function onSubmit(userData: FormLoginParams) {
+    try {
+      await handleAuthenticate(userData);
+    } catch (error) {
+      handlerError(error, 'Falha ao logar!');
+    }
+  }
 
   return (
     <>
@@ -48,7 +60,7 @@ export function LoginForm() {
 
       <View className="mb-6 mt-8 min-h-[250px] flex-1 justify-between">
         <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward">
-          Login
+          {isSubmitting ? <ActivityIndicator color={colors.white} /> : 'Login'}
         </AppButton>
         <View>
           <Text className="mb-6 text-base text-gray-600">Ainda não possui uma conta?</Text>

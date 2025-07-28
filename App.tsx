@@ -1,12 +1,16 @@
 import NavigationRoutes from '@/routes';
 import './global.css';
-import { StatusBar } from 'react-native';
+import { AuthContextProvider } from '@/context/auth.context';
+import { SnackbarContextProvider } from '@/context/snackbar.context';
+import { Snackbar } from '@/components/Snacbar';
 
 export default function App() {
   return (
-    <>
-      <NavigationRoutes />
-      {/* <StatusBar barStyle={'light-content'} backgroundColor="transparent" translucent /> */}
-    </>
+    <SnackbarContextProvider>
+      <AuthContextProvider>
+        <NavigationRoutes />
+        <Snackbar />
+      </AuthContextProvider>
+    </SnackbarContextProvider>
   );
 }
